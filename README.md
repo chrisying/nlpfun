@@ -27,3 +27,5 @@ WIP:
 -Better GUI (low priority)
 
 -Better algorithm
+
+Apologies to anyone who ACTUALLY knows NLP. I just want to be cool like you guys okay?
