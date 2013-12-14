@@ -19,7 +19,11 @@ And finely adjusted temperament was but one particularly were admirable things f
 Observer excellent for drawing the late irene adler all his own delicate and questionable.
 
 WIP:
+
 -Capitalization
+
 -Better sentences (or funnier ones)
+
 -Better GUI (low priority)
+
 -Better algorithm
