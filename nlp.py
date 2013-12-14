@@ -4,28 +4,30 @@
 
 import string, random
 
+# Class for storing info on a text
 class Book:
-	def __init__(self, filename):
-		self.words = self.readFile(filename)
+	def __init__(self, input):
+		if input[-5:-1] == '.txt':	#if reading a plaintext
+			self.words = self.readString(open(input[:-1], 'r').read())
+		else:	#if reading directly from string
+			self.words = self.readString(input)
 		self.dict = {}
 		if len(self.words) < 1:
 			raise Exception('Book too short')
 		for i in range(len(self.words) - 1):
-			self.analyze(self.words[i], self.words[i + 1])
-		self.analyze(self.words[-1], '.')
+			self.analyze(self.words[i], self.words[i + 1])	#analyze sets of 2 words
+		self.analyze(self.words[-1], '.')	#add period
 		#self.printWords()
-		print(self.createString(random.randint(5, 10)))
+		#print(self.createString(random.randint(5, 10)))
 
-	def readFile(self, filename):
-		f = open(filename, 'r')
-		text = f.read()
+	def readString(self, text):	#parses string
 		text = text.lower()
 		for c in string.punctuation:
 			text = text.replace(c, ' ')
 		words = text.split()
 		return words
 
-	def analyze(self, pre, post):
+	def analyze(self, pre, post):	#sets up graph of consecutive words
 		if pre in self.dict:
 			sublist = self.dict[pre]
 			for word in sublist:
@@ -38,7 +40,7 @@ class Book:
 			sublist.append([post, 1])
 			self.dict[pre] = sublist
 
-	def createString(self, length):
+	def createString(self, length):		#creates a random string
 		str = ''
 		slen = 0
 		w = random.choice(self.words)
@@ -52,9 +54,44 @@ class Book:
 		
 		return str[0].upper() + str[1:-1] + '.'
 
-	def printWords(self):
+	def printWords(self):	#debugging purposes
 		for word in self.dict:
 			print self.dict[word]
 
-Book('sherlockp1.txt')
-print 'NLP Complete!'
+### GUI ###
+
+from Tkinter import *
+
+class NLPGui:
+    def __init__(self, parent):
+    	parent.title("NLP Fun")
+
+        self.frame = Frame(parent)
+        self.frame.pack()
+
+        self.title = Label(self.frame, text = 'Instructions: enter a file name (.txt files only) or copy paste\nany text you want into the text box and click Create!')
+        self.title.pack()
+
+        self.textframe = LabelFrame(self.frame, text = 'Text')
+        self.textframe.pack()
+        self.textbox = Text(self.textframe)
+        self.textbox.pack()
+
+        self.button = Button(self.frame, text = 'Create!', command = self.create)
+        self.button.pack()
+
+        self.outframe = LabelFrame(self.frame, text = 'Output')
+        self.outframe.pack()
+        self.out = StringVar()
+        self.output = Label(self.outframe, textvariable = self.out)
+        self.output.pack()
+
+    def create(self):
+        b = Book(self.textbox.get(1.0, END))
+        print(b.createString(random.randint(5, 15)))
+        self.out.set(b.createString(random.randint(5,15)))
+
+
+root = Tk()
+app = NLPGui(root)
+root.mainloop()
