@@ -23,7 +23,8 @@ class Book:
 	def readString(self, text):	#parses string
 		text = text.lower()
 		for c in string.punctuation:
-			text = text.replace(c, ' ')
+			if c != '\'' and c != '-':
+				text = text.replace(c, ' ')
 		words = text.split()
 		return words
 
@@ -77,6 +78,11 @@ class NLPGui:
         self.textbox = Text(self.textframe)
         self.textbox.pack()
 
+        self.numframe = LabelFrame(self.frame, text = 'Max length')
+        self.numframe.pack()
+        self.numbox = Text(self.numframe, height = 1, width = 10)
+        self.numbox.pack()
+
         self.button = Button(self.frame, text = 'Create!', command = self.create)
         self.button.pack()
 
@@ -88,8 +94,7 @@ class NLPGui:
 
     def create(self):
         b = Book(self.textbox.get(1.0, END))
-        print(b.createString(random.randint(5, 15)))
-        self.out.set(b.createString(random.randint(5,15)))
+        self.out.set(b.createString(random.randint(5,int(self.numbox.get(1.0, END)))))
 
 
 root = Tk()
