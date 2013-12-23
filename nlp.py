@@ -29,14 +29,13 @@ class Book:
     def analyze(self, pre, post):   #sets up graph of consecutive words
         if pre in self.dict:
             sublist = self.dict[pre]
-            for word in sublist:
-                if word[0] == post:
-                    word[1] += 1
-                else:
-                    sublist.append([post, 1])
+            if post in sublist:
+                sublist[post] += 1
+            else:
+                sublist[post] = 1
         else:
-            sublist = []
-            sublist.append([post, 1])
+            sublist = {}
+            sublist[post] = 1
             self.dict[pre] = sublist
 
     def createString(self, length):     #creates a random string
@@ -49,7 +48,8 @@ class Book:
             if (w == '.'):
                 str = str[:-2]
                 break
-            w = random.choice(self.dict[w])[0]
+            l = len(self.dict[w])
+            w = random.choice(self.dict[w].keys())
         
         return str[0].upper() + str[1:-1] + '.'
 
